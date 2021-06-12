@@ -29,8 +29,7 @@ const loginValidation = userDetails => {
 
 const logoutValidation = userDetails => {
     const schema = Joi.object({
-        auth: Joi.string().required(),
-        email: Joi.string().min(6).required().email(),
+        email: Joi.string().min(6).required().email()
     });
     return schema.validate(userDetails);
 

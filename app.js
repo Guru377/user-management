@@ -18,6 +18,6 @@ app.use(express.json());
 
 app.use('/api/user', authRoute);
 app.use("/api/post", postRoute);
-app.use("/api/details", userDetails);
+app.use("/api/search", userDetails);
 
 app.listen(3000, () => console.log("Server is up and running"));

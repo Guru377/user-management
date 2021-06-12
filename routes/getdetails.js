@@ -6,46 +6,29 @@ const User = require("../model/User");
 //     res.send(req.user);
 // });
 
-router.get("/name", verify, async (req, res) => {
-    var userName = req.query.name;
-    console.log(userName);
-    const user = await User.findOne({ name: userName });
+router.post("/user", verify, async (req, res) => {
+    var userName = req.body.name;
+    var userContact = req.body.contact;
+    var users;
 
-    if (user != null) {
-        res.status(200).send({
-            name: user.name,
-            email: user.email,
-            contact: user.contact,
-            address: user.address,
-            gender: user.gender,
-            country: user.country
-        });
+    if (userName && userContact) {
+        var searchKey = new RegExp(userName, 'i')
+        users = await User.find({ name: searchKey, contact: userContact });
+    }
+    else if (userName) {
+        var searchKey = new RegExp(userName, 'i')
+        users = await User.find({ name: searchKey });
+    }
+    else if (userContact) {
+        users = await User.find({ contact: userContact });
+    }
+    if (users != null) {
+        res.status(200).send(users);
         return;
     }
 
     res.status(404).send("user not found!");
     return;
-});
-
-router.get("/contact", verify, async (req, res) => {
-    var userContact = req.query.contact;
-
-    const user = await User.findOne({ contact: userContact });
-
-    if (user != null) {
-        res.status(200).send({
-            name: user.name,
-            email: user.email,
-            contact: user.contact,
-            address: user.address,
-            gender: user.gender,
-            country: user.country
-        });
-        return;
-    }
-
-    res.status(404).send("user not found!");
-
 });
 
 module.exports = router;

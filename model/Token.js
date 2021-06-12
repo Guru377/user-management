@@ -1,7 +1,7 @@
 const { required } = require("joi");
 const mongoose = require("mongoose");
 
-const blackListSchema = new mongoose.Schema({
+const TokenSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
@@ -18,4 +18,4 @@ const blackListSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Token', blackListSchema);
+module.exports = mongoose.model('Token', TokenSchema);

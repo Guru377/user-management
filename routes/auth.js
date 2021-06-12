@@ -26,8 +26,8 @@ router.post('/register', async (req, res, next) => {
     const emailExist = await User.findOne({ email: req.body.email });
 
     if (emailExist) {
-        res.status(400).send("Email already exists")
-        return next(new Error("Email already exists"));
+        res.status(400).send("User already exists")
+        return next(new Error("User already exists"));
     }
 
     const salt = await bycrypt.genSalt(10);
@@ -62,49 +62,53 @@ router.post('/login', async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
 
     if (!user) {
-        return res.status(400).send("User does not exists");
+        return res.status(400).send("Invalid user credentials");
     }
 
     const validPassword = await bycrypt.compare(req.body.password, user.password);
     if (!validPassword) {
-        return res.status(400).send("Invalid password");
+        return res.status(400).send("Invalid user credentials");
     }
 
-    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET, { expiresIn: "120s" });
-    res.header("auth", token).send({ "token": token, "message": "user logged in!" });
+    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET, { expiresIn: "1h" });
 
-    //res.send(user._id);
-
-});
-
-
-router.post('/logout', async (req, res) => {
-    const { error } = logoutValidation(req.body);
-    if (error) {
-        res.status(400).send(error.details[0].message);
-    }
-
-    const token = await Token.findOne({ auth: req.auth });
-
-    if (token) {
-        return res.status(400).send("Token expired!");
-    }
-
-    const tokenTosave = new Token({
-        email: req.body.email,
-        auth: req.body.auth
-    });
+    const existingToken = await Token.findOne({ email: req.body.email });
 
     try {
 
-        //Need delete tokens which are one day older
-        const saveToken = await tokenTosave.save();
-        res.send({ user: req.body.email, message: "logged off!" });
+        if (!existingToken) {
+
+            const tokenTosave = new Token({
+                email: req.body.email,
+                auth: token
+            });
+
+            await tokenTosave.save();
+        }
+        else {
+            existingToken.auth = token;
+            await existingToken.save();
+        }
+        res.header("auth", token).send({ "token": token, "message": "user logged in!" });
+
     } catch (error) {
         res.status(400).send(error);
+
     }
+});
 
 
+router.post('/logout', verify, async (req, res) => {
+    const authHeader = req.header("Authorization");
+    const auth = authHeader && authHeader.split(' ')[1]
+    const token = await Token.findOne({ auth: auth});
+    try {
+        await token.remove();
+        res.send({ user: req.body.email, message: "logged off!" });
+    } catch (error) {
+        console.log(error);
+        res.status(400).send(error);
+    }
 });
 
 
