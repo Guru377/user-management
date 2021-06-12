@@ -98,12 +98,9 @@ router.post('/login', async (req, res) => {
 });
 
 
-router.post('/logout', verify, async (req, res) => {
-    const authHeader = req.header("Authorization");
-    const auth = authHeader && authHeader.split(' ')[1]
-    const token = await Token.findOne({ auth: auth});
+router.delete('/logout', verify, async (req, res) => {
     try {
-        await token.remove();
+        await req.authToken.remove();
         res.send({ user: req.body.email, message: "logged off!" });
     } catch (error) {
         console.log(error);
