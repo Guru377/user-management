@@ -75,14 +75,14 @@ curl -X POST \
 Example:
 
 curl -X POST \
-  http://localhost:3000/api/search/user \
-  -H 'Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGM0YWEwOTExNjhjYTIxZTE1NGNjOTUiLCJpYXQiOjE2MjM1MDE2MDMsImV4cCI6MTYyMzUwNTIwM30.6z-QU5c3G0gLCK77jXPIhulL-pFTXQrsNvdEykMg4O4' \
+  http://localhost:3000/api/searchuser \
+  -H 'Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGM0YjUyMTQwYWU2NzJiMDczMzg2ZGMiLCJpYXQiOjE2MjM1MDUwMDEsImV4cCI6MTYyMzUwODYwMX0.cgje1-lqip4mgJeDAFfflpOVXwS-PGfY1paq3vk2s4o' \
   -H 'Content-Type: application/json' \
-  -H 'Postman-Token: bd2483e6-5e8d-49f8-9f6b-76a67ac482ec' \
+  -H 'Postman-Token: a81a8be7-cd0f-4b5c-8dfa-28bb21044528' \
   -H 'cache-control: no-cache' \
   -d '{
-	"name": "Guru",
-	"contact": "9165659111"
+		"name": "Guru",
+		"contact": "9165659111"
 }'
 
 
@@ -111,13 +111,14 @@ curl -X POST \
 
 Example:
 
-curl -X POST \
+curl -X DELETE \
   http://localhost:3000/api/user/logout \
-  -H 'Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGM0YWEwOTExNjhjYTIxZTE1NGNjOTUiLCJpYXQiOjE2MjM1MDE2MDMsImV4cCI6MTYyMzUwNTIwM30.6z-QU5c3G0gLCK77jXPIhulL-pFTXQrsNvdEykMg4O4' \
+  -H 'Authorization: [{"key":"Authorization","value":"bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGM0YjUyMTQwYWU2NzJiMDczMzg2ZGMiLCJpYXQiOjE2MjM1MDUwMDEsImV4cCI6MTYyMzUwODYwMX0.cgje1-lqip4mgJeDAFfflpOVXwS-PGfY1paq3vk2s4o","description":"","type":"text","enabled":true}]' \
   -H 'Content-Type: application/json' \
-  -H 'Postman-Token: 5fa21d3a-4f1f-476f-b329-3b6e788147fd' \
+  -H 'Postman-Token: 7bee7a39-7798-490b-b0dd-1aefddd020f3' \
   -H 'cache-control: no-cache'
 
+  
   ### Response
 
   {
