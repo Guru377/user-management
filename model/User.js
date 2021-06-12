@@ -14,9 +14,7 @@ const userSchema = new mongoose.Schema({
         min: 6
     },
     contact: {
-        type: String,
-        max: 10,
-        require: true
+        type: String
     },
     address: {
         type: String,

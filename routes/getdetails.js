@@ -1,33 +1,20 @@
 const router = require("express").Router();
 const verify = require("./verifyToken");
 const User = require("../model/User");
+const userService = require("../services/userService");
 
-router.post("/", verify, async (req, res) => {
-    var userName = req.body.name;
-    var userContact = req.body.contact;
-    var users;
-
+router.post("/searchUser", verify, async (req, res) => {
     try {
-        if ((!userName || userName === "") && (!userContact || userContact === "")) {
-            res.status(400).send("user name or contact is require");
-            return;
+        let response = await userService.searchUser(req.body);
+        if (response.status === "error") {
+            return res.status(400).send(response.response);
         }
-        if (userName && userContact) {
-            var searchKey = new RegExp(userName, 'i')
-            users = await User.find({ name: searchKey, contact: userContact });
+        else {
+            return res.status(200).send(response.response);
         }
-        else if (userName) {
-            var searchKey = new RegExp(userName, 'i')
-            users = await User.find({ name: searchKey });
-        }
-        else if (userContact) {
-            users = await User.find({ contact: userContact });
-        }
-        res.status(200).send({ users: users });
-        return;
-    } catch (error) {
-        res.status(400).send(error);
 
+    } catch (error) {
+        return res.status(500).send("request failed");
     }
 });
 

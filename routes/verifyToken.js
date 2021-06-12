@@ -1,6 +1,6 @@
-const { required } = require("joi");
 const jwt = require("jsonwebtoken");
 const Token = require("../model/Token");
+const verifyToken = require("../services/authService").verifyToken;
 
 module.exports = async function (req, res, next) {
     const authHeader = req.header("Authorization");
@@ -9,21 +9,17 @@ module.exports = async function (req, res, next) {
     if (!token) {
         res.status(401).send("Access Denied");
     }
-
     try {
-
-        const tokenFromDB = await Token.findOne({ auth: token });
-
-        if (!tokenFromDB) {
-            res.status(400).send("Token expired");
-            return next(new Error("Token expired"));
+        const response = await verifyToken(token);
+        if (response.status === "error") {
+            return res.status(400).send(response.response.message);
         }
-        const verified = jwt.verify(token, process.env.TOKEN_SECRET);
-        req.user = verified;
-        req.authToken = tokenFromDB;
-        next();
+        else {
+            return next();
+        }
     } catch (error) {
-        res.status(400).send("Invalid Token");
+        res.status(400).send("Request failed");
     }
+
 
 }
