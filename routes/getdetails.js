@@ -12,7 +12,14 @@ router.get("/name", verify, async (req, res) => {
     const user = await User.findOne({ name: userName });
 
     if (user != null) {
-        res.status(200).send(user);
+        res.status(200).send({
+            name: user.name,
+            email: user.email,
+            contact: user.contact,
+            address: user.address,
+            gender: user.gender,
+            country: user.country
+        });
         return;
     }
 
@@ -26,7 +33,14 @@ router.get("/contact", verify, async (req, res) => {
     const user = await User.findOne({ contact: userContact });
 
     if (user != null) {
-        res.status(200).send(user);
+        res.status(200).send({
+            name: user.name,
+            email: user.email,
+            contact: user.contact,
+            address: user.address,
+            gender: user.gender,
+            country: user.country
+        });
         return;
     }
 
