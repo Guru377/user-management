@@ -8,28 +8,29 @@ const User = require("../model/User");
 
 router.get("/name", verify, async (req, res) => {
     var userName = req.query.name;
-    var userContact = req.query.contact;
     console.log(userName);
     const user = await User.findOne({ name: userName });
-    res.status(400).send(user);
 
+    if (user != null) {
+        res.status(200).send(user);
+        return;
+    }
 
-
+    res.status(404).send("user not found!");
+    return;
 });
 
 router.get("/contact", verify, async (req, res) => {
-    var userName = req.query.name;
     var userContact = req.query.contact;
 
-    console.log("-----------------------------------------");
-    console.log(userName);
     const user = await User.findOne({ contact: userContact });
-    console.log("-----------------------------");
-    console.log(user);
 
-    res.status(400).send(user);
+    if (user != null) {
+        res.status(200).send(user);
+        return;
+    }
 
-
+    res.status(404).send("user not found!");
 
 });
 
