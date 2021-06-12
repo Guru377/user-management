@@ -43,7 +43,7 @@ const register = async function (userDetails) {
     });
     const savedUser = await user.save();
     return {
-        status: "sucess",
+        status: "success",
         response: {
             user: user.name,
             message: "user rigiseterd"
@@ -90,7 +90,7 @@ const login = async function (userDetails) {
         existingToken.auth = token;
         await existingToken.save();
     }
-    return { "status": "sucess", "response": { "token": token, "message": "user logged in!" } };
+    return { "status": "success", "response": { "token": token, "message": "user logged in!" } };
 }
 
 const logout = async function (token) {
@@ -105,7 +105,7 @@ const verifyToken = async function (token) {
     }
     const verified =  jwt.verify(token, process.env.TOKEN_SECRET);
     if (verified) {
-        const response =  { "status": "sucess"};
+        const response =  { "status": "success"};
         response.response = {};
         response.response.token = tokenFromDB;
         return response;
