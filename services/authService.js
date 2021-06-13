@@ -103,9 +103,9 @@ const verifyToken = async function (token) {
     if (!tokenFromDB) {
         return { "status": "error", "response": { "message": "Token expired" } };
     }
-    const verified =  jwt.verify(token, process.env.TOKEN_SECRET);
+    const verified = jwt.verify(token, process.env.TOKEN_SECRET);
     if (verified) {
-        const response =  { "status": "success"};
+        const response = { "status": "success" };
         response.response = {};
         response.response.token = tokenFromDB;
         return response;
